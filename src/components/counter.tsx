@@ -22,37 +22,33 @@ export const Counter = component(() => {
   const parity = computed(() => (count.value % 2 === 0 ? t('counter.even') : t('counter.odd')));
   const startedAt = new Date().toLocaleTimeString();
 
+  // Named, and defined here rather than inside the JSX below. Not for the
+  // reason React has — a component runs once, so an inline arrow would be
+  // allocated once too, and costs nothing. For the reason the `.styled.tsx`
+  // file next door exists: markup that reads as structure, with appearance
+  // and behaviour each somewhere a name can be given to them.
+  const increment = (): void => {
+    count.value++;
+  };
+  const decrement = (): void => {
+    count.value--;
+  };
+  const reset = (): void => {
+    count.value = 0;
+  };
+
   return (
     <Panel>
       <Row>
         <Value>{count.value}</Value>
         <Parity>{parity.value}</Parity>
-        <Button
-          type="button"
-          $quiet
-          aria-label={t('counter.decrement')}
-          onClick={() => {
-            count.value--;
-          }}
-        >
+        <Button type="button" $quiet aria-label={t('counter.decrement')} onClick={decrement}>
           −
         </Button>
-        <Button
-          type="button"
-          aria-label={t('counter.increment')}
-          onClick={() => {
-            count.value++;
-          }}
-        >
+        <Button type="button" aria-label={t('counter.increment')} onClick={increment}>
           +
         </Button>
-        <Reset
-          type="button"
-          $quiet
-          onClick={() => {
-            count.value = 0;
-          }}
-        >
+        <Reset type="button" $quiet onClick={reset}>
           {t('counter.reset')}
         </Reset>
       </Row>

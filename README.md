@@ -93,6 +93,11 @@ bundle — unlike the framework's own diagnostics, it is not stripped for you.
 **The theme is a signal.** Assigning a new object restyles everything that
 reads it, which is where a dark mode goes.
 
+**Event handlers get names.** Not for React's reason — a component runs once,
+so an inline arrow is allocated once and costs nothing here. For the same
+reason the `.styled.tsx` file exists: markup reads as structure, and
+appearance and behaviour each live somewhere they can be named.
+
 ## Scripts
 
 | Command           | What it does                    |
