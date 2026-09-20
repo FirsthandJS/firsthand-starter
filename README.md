@@ -25,14 +25,14 @@ Then press **Ctrl+Shift+F** for the devtools panel.
 | `@firsthandjs/query`    | Provided and waiting; nothing fetches yet                    |
 | `@firsthandjs/devtools` | Development only, behind a `import.meta.env.DEV` guard       |
 | `@firsthandjs/compiler` | TSX into DOM instructions, at build time                     |
-| `@firsthandjs/testing`  | One test, so there is somewhere to put the second            |
+| `@firsthandjs/testing`  | Two tests, each beside the thing it tests                    |
 
 There is no React bridge. `@firsthandjs/react` exists for component libraries
 that only ship for React — add it when you reach for one.
 
 ## What it weighs
 
-The production build is 77.6 kB minified, 26.7 kB gzip — and **13.9 kB of that
+The production build is 80.3 kB minified, 27.5 kB gzip — and **13.9 kB of that
 gzip is i18next**, which is larger than the framework, the router, the styles
 and the query cache put together. That is not a complaint about i18next; it is
 a real translation library and this starter uses a fraction of it. But if your
@@ -46,27 +46,43 @@ Measured, not estimated: `npm run build`, and `esbuild` over i18next on its own.
 
 ```
 src/
-  main.tsx            the application: theme, query client, routes
-  devtools.ts         devtools, first and development-only
-  i18n.ts             i18next, made reactive
-  theme.ts            the theme, and the type declaration that types it
-  app.tsx             the shell: header, navigation, outlet
-  app.styled.tsx      the shell's appearance
+  main.tsx                  the application: theme, query client, routes
+  setup/
+    devtools.ts             devtools, first and development-only
+    i18n.ts                 i18next, made reactive
+    theme.ts                the theme, and the declaration that types it
+  shell/
+    shell.tsx               header, navigation, outlet
+    shell.styled.tsx
   pages/
-    home.tsx          one page
-    home.styled.tsx   that page's appearance
-    about.tsx         the other page
-    about.styled.tsx  the other page's appearance
+    home.tsx                one page
+    home.styled.tsx
+    home.test.tsx
+    about.tsx               the other page
+    about.styled.tsx
+  components/
+    counter.tsx             a signal, a computed, and three buttons
+    counter.styled.tsx
+    counter.test.tsx
 ```
 
-One `.styled.tsx` beside every file that renders. A component file reads as
-structure, the file beside it as appearance, and neither needs the other open.
+Three rules, and they are the whole convention:
+
+- **One `.styled.tsx` beside every file that renders.** A component file reads
+  as structure, the file beside it as appearance, and neither needs the other
+  open.
+- **A test sits beside what it tests**, not in a `__tests__` directory that
+  mirrors the source and drifts from it.
+- **`main.tsx` is the only file at the root**, because it is the only file that
+  is about the application as a whole.
 
 ## Things worth knowing before you change it
 
 **A component runs once.** Not once per update — once, ever, per instance.
-Read a signal where you use it rather than into a `const` above; the compiler
-will tell you if you forget.
+The counter on the home page is the demonstration: its number changes, and the
+timestamp beside it — read while the setup ran — never does. Read a signal
+where you use it rather than into a `const` above; the compiler will tell you
+if you forget.
 
 **Devtools are imported first, and dynamically.** Imports are hoisted, so
 `attach()` written among the imports of `main.tsx` would run after every one of

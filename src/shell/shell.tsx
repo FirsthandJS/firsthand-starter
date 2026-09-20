@@ -7,10 +7,10 @@
  */
 import { component } from '@firsthandjs/dom';
 import { Outlet } from '@firsthandjs/router';
-import { t, toggleLanguage } from './i18n';
-import { Brand, GlobalStyle, Header, LanguageButton, Main, Nav, Page, Tab } from './app.styled';
+import { t, toggleLanguage } from '../setup/i18n';
+import { Brand, GlobalStyle, Header, LanguageButton, Main, Nav, Page, Tab } from './shell.styled';
 
-export const App = component(() => (
+export const Shell = component(() => (
   <Page>
     <GlobalStyle />
     <Header>

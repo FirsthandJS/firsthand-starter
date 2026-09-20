@@ -18,8 +18,16 @@ const resources = {
       home: {
         title: 'A quiet place to start',
         lead: 'Two pages, a router, styles, translations and a query cache — wired up and no larger than it needs to be.',
-        body: 'Everything you see is a component that ran once. Nothing re-renders: the parts that read a signal update, and the rest of the page is never touched again. Switch the language in the corner and watch which words change.',
+        body: 'The counter is the shortest honest demonstration. Its number is a signal, the word beside it is derived from that signal, and the time is read once while the component is set up. Click as long as you like: the number moves, the time does not, and no other word on this page is touched. Switch the language in the corner to see which parts read a translation.',
         aside: 'Delete what you do not need. That is what a starting point is for.',
+      },
+      counter: {
+        even: 'even',
+        odd: 'odd',
+        increment: 'Increase',
+        decrement: 'Decrease',
+        reset: 'Reset',
+        note: 'This component ran once, at {{time}}, and has not run since. Only the parts that read the signal update.',
       },
       about: {
         title: 'What is in the box',
@@ -42,8 +50,16 @@ const resources = {
       home: {
         title: 'Ein ruhiger Anfang',
         lead: 'Zwei Seiten, ein Router, Styles, Übersetzungen und ein Query-Cache — verdrahtet und keinen Deut größer als nötig.',
-        body: 'Alles hier ist eine Komponente, die einmal gelaufen ist. Nichts rendert neu: es aktualisieren sich die Stellen, die ein Signal lesen, der Rest der Seite wird nie wieder angefasst. Wechsle oben rechts die Sprache und sieh zu, welche Wörter sich ändern.',
+        body: 'Der Zähler ist die kürzeste ehrliche Vorführung. Seine Zahl ist ein Signal, das Wort daneben wird daraus abgeleitet, und die Uhrzeit wird einmal gelesen, während die Komponente aufgebaut wird. Klick so lange du magst: die Zahl bewegt sich, die Uhrzeit nicht, und kein anderes Wort dieser Seite wird angefasst. Wechsle oben rechts die Sprache, um zu sehen, welche Stellen eine Übersetzung lesen.',
         aside: 'Lösche, was du nicht brauchst. Dafür ist ein Startpunkt da.',
+      },
+      counter: {
+        even: 'gerade',
+        odd: 'ungerade',
+        increment: 'Erhöhen',
+        decrement: 'Verringern',
+        reset: 'Zurücksetzen',
+        note: 'Diese Komponente lief einmal, um {{time}}, und seitdem nicht wieder. Es aktualisieren sich nur die Stellen, die das Signal lesen.',
       },
       about: {
         title: 'Was drin ist',

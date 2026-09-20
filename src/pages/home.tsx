@@ -1,17 +1,20 @@
 /**
- * The home page.
+ * The home page: some text, and a counter to make the text demonstrable.
  *
- * Four elements, all text. Each `t(...)` is a part of its own: switching the
- * language re-runs those four reads and touches nothing else on the page.
+ * Every `t(...)` here is a part of its own. Switching the language re-runs
+ * those four reads and touches nothing else — not the counter's number, and
+ * not the DOM around it.
  */
 import { component } from '@firsthandjs/dom';
-import { t } from '../i18n';
+import { t } from '../setup/i18n';
+import { Counter } from '../components/counter';
 import { Aside, Body, Lead, Title } from './home.styled';
 
 export const Home = component(() => (
   <article>
     <Title>{t('home.title')}</Title>
     <Lead>{t('home.lead')}</Lead>
+    <Counter />
     <Body>{t('home.body')}</Body>
     <Aside>{t('home.aside')}</Aside>
   </article>

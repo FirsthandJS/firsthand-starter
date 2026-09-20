@@ -7,7 +7,7 @@
  * rows of live data it is the whole difference.
  */
 import { component } from '@firsthandjs/dom';
-import { t } from '../i18n';
+import { t } from '../setup/i18n';
 import { Footer, Lead, List, Package, Title, What } from './about.styled';
 
 const packages = ['router', 'styled', 'i18n', 'query', 'devtools'] as const;

@@ -6,16 +6,16 @@
  * are provided here because three things are application-wide — the theme,
  * the query cache and the routes.
  */
-import './devtools';
+import './setup/devtools';
 
 import { component, provide, render, signal } from '@firsthandjs/dom';
 import { Router, route } from '@firsthandjs/router';
 import { QueryClientContext, createQueryClient } from '@firsthandjs/query';
 import { ThemeContext } from '@firsthandjs/styled';
-import { App } from './app';
+import { Shell } from './shell/shell';
 import { Home } from './pages/home';
 import { About } from './pages/about';
-import { theme } from './theme';
+import { theme } from './setup/theme';
 
 const Root = component(() => {
   // A signal, not a constant: assigning a new object here restyles everything
@@ -33,7 +33,7 @@ const Root = component(() => {
   const routes = [
     route({
       path: '/',
-      component: App,
+      component: Shell,
       children: (child) => [
         child({ index: true, component: Home }),
         child({ path: 'about', component: About }),

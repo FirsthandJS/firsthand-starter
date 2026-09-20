@@ -1,14 +1,12 @@
 /**
- * One test, to show what testing this looks like.
+ * The page, and the language switch that runs through it.
  *
- * `mount` renders into a container and cleans up after itself; there is no
- * `act`, no `await` and no flush, because an update is synchronous. Assert
- * what a person would see.
+ * Beside the page it tests, like every other test in this project.
  */
 import { afterEach, expect, it } from 'vitest';
 import { cleanup, mount } from '@firsthandjs/testing';
-import { Home } from './pages/home';
-import { t, toggleLanguage } from './i18n';
+import { Home } from './home';
+import { t, toggleLanguage } from '../setup/i18n';
 
 afterEach(cleanup);
 
