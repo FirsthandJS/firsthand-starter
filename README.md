@@ -32,7 +32,7 @@ that only ship for React — add it when you reach for one.
 
 ## What it weighs
 
-The production build is 85.6 kB minified, 29.3 kB gzip — and **13.9 kB of that
+The production build is 85.7 kB minified, 29.3 kB gzip — and **13.9 kB of that
 gzip is i18next**, which is larger than the framework, the router, the styles
 and the data layer put together. That is not a complaint about i18next; it is
 a real translation library and this starter uses a fraction of it. But if your
