@@ -8,6 +8,7 @@
 import { component } from '@firsthandjs/dom';
 import { t } from '../setup/i18n';
 import { Counter } from '../components/counter';
+import { Facts } from '../components/facts';
 import { Aside, Body, Lead, Title } from './home.styled';
 
 export const Home = component(() => (
@@ -15,6 +16,7 @@ export const Home = component(() => (
     <Title>{t('home.title')}</Title>
     <Lead>{t('home.lead')}</Lead>
     <Counter />
+    <Facts />
     <Body>{t('home.body')}</Body>
     <Aside>{t('home.aside')}</Aside>
   </article>

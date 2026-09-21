@@ -1,8 +1,8 @@
 # Firsthand starter
 
 A small starting point for a [Firsthand](https://github.com/FirsthandJS/firsthand)
-application: two pages, routed, styled, translated, with the query cache and
-devtools already wired up.
+application: two pages, routed, styled, translated, with data loaded through a
+client and a cache, and devtools already wired up.
 
 Deliberately small. Everything here is something you would otherwise set up on
 the first day — and nothing else.
@@ -22,7 +22,7 @@ Then press **Ctrl+Shift+F** for the devtools panel.
 | `@firsthandjs/router`   | Two routes under one shell, typed                            |
 | `@firsthandjs/styled`   | Every style in this project, beside the component it styles  |
 | `@firsthandjs/i18n`     | Every word in this project, in two languages                 |
-| `@firsthandjs/query`    | Provided and waiting; nothing fetches yet                    |
+| `@firsthandjs/data`     | One resource, one tag, one fetch client with a cache         |
 | `@firsthandjs/devtools` | Development only, behind a `import.meta.env.DEV` guard       |
 | `@firsthandjs/compiler` | TSX into DOM instructions, at build time                     |
 | `@firsthandjs/testing`  | Two tests, each beside the thing it tests                    |
@@ -32,9 +32,9 @@ that only ship for React — add it when you reach for one.
 
 ## What it weighs
 
-The production build is 80.3 kB minified, 27.5 kB gzip — and **13.9 kB of that
+The production build is 85.6 kB minified, 29.3 kB gzip — and **13.9 kB of that
 gzip is i18next**, which is larger than the framework, the router, the styles
-and the query cache put together. That is not a complaint about i18next; it is
+and the data layer put together. That is not a complaint about i18next; it is
 a real translation library and this starter uses a fraction of it. But if your
 application needs two languages and nothing more, a plain object and
 `translator()` from `@firsthandjs/i18n` will do the same job for a few hundred
@@ -46,8 +46,9 @@ Measured, not estimated: `npm run build`, and `esbuild` over i18next on its own.
 
 ```
 src/
-  main.tsx                  the application: theme, query client, routes
+  main.tsx                  the application: theme, data store, routes
   setup/
+    api.ts                  the fetch client and the cache
     devtools.ts             devtools, first and development-only
     i18n.ts                 i18next, made reactive
     theme.ts                the theme, and the declaration that types it
@@ -64,6 +65,11 @@ src/
     counter.tsx             a signal, a computed, and three buttons
     counter.styled.tsx
     counter.test.tsx
+    facts.tsx               a resource, a tag, and a cache to reach through
+    facts.styled.tsx
+    facts.test.tsx
+public/
+  facts.json                what the resource loads. A server would do instead
 ```
 
 Three rules, and they are the whole convention:
@@ -92,6 +98,14 @@ bundle — unlike the framework's own diagnostics, it is not stripped for you.
 
 **The theme is a signal.** Assigning a new object restyles everything that
 reads it, which is where a dark mode goes.
+
+**Data comes in through two layers, and they stay apart.** `useResource` holds
+the state — loading, loaded, failed, and when to run again. The client in
+`setup/api.ts` sends the request and keeps the cache, because knowing when two
+requests are the same thing is a transport's job and not a component's. What
+travels between them is one object: `{ signal, force }`. Press **Reload** on
+the home page and watch what that buys — the invalidation reaches *through* the
+cache, which is the whole reason `force` exists.
 
 **Event handlers get names.** Not for React's reason — a component runs once,
 so an inline arrow is allocated once and costs nothing here. For the same

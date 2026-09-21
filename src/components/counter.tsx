@@ -16,7 +16,6 @@
 import { component, computed, signal } from '@firsthandjs/dom';
 import { t } from '../setup/i18n';
 import { Button, Note, Panel, Parity, Reset, Row, Value } from './counter.styled';
-
 export const Counter = component(() => {
   const count = signal(0);
   const parity = computed(() => (count.value % 2 === 0 ? t('counter.even') : t('counter.odd')));
