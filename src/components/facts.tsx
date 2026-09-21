@@ -20,6 +20,16 @@
  * **Reloading reaches through it.** `invalidate(tag('facts'))` runs the loader
  * again with `force`, which drops the cache entry rather than being answered
  * out of it. That is the one place where the two layers touch.
+ *
+ * And the setup returns a **render function**, because this view has a choice
+ * to make. A setup runs once, so a choice made in one is made for ever; the
+ * arrow below is a reactive scope of its own, and may use an ordinary `if`.
+ * The whole of it runs again when `status` changes — and writes into the nodes
+ * it already made, rather than building them afresh.
+ *
+ * Note what it does *not* wake: the list and the button read the resource in
+ * the markup, so they are parts of their own and update without the run
+ * hearing about it. Where you put the read is how you choose.
  */
 import { component } from '@firsthandjs/dom';
 import { tag, useInvalidate, useResource } from '@firsthandjs/data';
@@ -40,28 +50,32 @@ export const Facts = component(() => {
     void invalidate(tag('facts'));
   };
 
-  return (
-    <Panel>
-      <Header>
-        <Heading>{t('facts.title')}</Heading>
-        <Button type="button" disabled={facts.loading.value} onClick={reload}>
-          {facts.loading.value ? t('facts.loading') : t('facts.reload')}
-        </Button>
-      </Header>
+  return () => {
+    const failed = facts.status.value === 'error';
 
-      {facts.status.value === 'error' ? (
-        <Failure>{t('facts.failed')}</Failure>
-      ) : (
-        // `loading` is true even while the previous answer is still on screen,
-        // which is what `status` alone could not tell you.
-        <List $stale={facts.loading.value}>
-          {(facts.data.value?.facts ?? []).map((fact) => (
-            <Fact key={fact}>{fact}</Fact>
-          ))}
-        </List>
-      )}
+    return (
+      <Panel>
+        <Header>
+          <Heading>{t('facts.title')}</Heading>
+          <Button type="button" disabled={facts.loading.value} onClick={reload}>
+            {facts.loading.value ? t('facts.loading') : t('facts.reload')}
+          </Button>
+        </Header>
 
-      <Note>{t('facts.note')}</Note>
-    </Panel>
-  );
+        {failed ? (
+          <Failure>{t('facts.failed')}</Failure>
+        ) : (
+          // `loading` is true even while the previous answer is still on
+          // screen, which is what `status` alone could not tell you.
+          <List $stale={facts.loading.value}>
+            {(facts.data.value?.facts ?? []).map((fact) => (
+              <Fact key={fact}>{fact}</Fact>
+            ))}
+          </List>
+        )}
+
+        <Note>{t('facts.note')}</Note>
+      </Panel>
+    );
+  };
 });
