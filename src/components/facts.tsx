@@ -21,15 +21,15 @@
  * again with `force`, which drops the cache entry rather than being answered
  * out of it. That is the one place where the two layers touch.
  *
- * And note where the reads are. `status`, `loading` and `data` are all read
- * **in the markup**, so each one is a part of its own: the button disables
- * itself, the list fills in and the failure takes the list's place, and none
- * of them wakes the others. The setup runs once and nothing here runs again.
- *
- * A setup may instead return a render function, which is the right shape when
- * a view has a choice to make out of several values at once — see the guide.
- * It is not this view: every read here belongs to exactly one place on screen,
- * and reading them where they are used is both smaller and less to explain.
+ * And the setup returns a **render function**, because this view has a choice
+ * to make. A setup runs once, so a choice made in one is made for ever; the
+ * arrow below is a reactive scope of its own, and may use an ordinary `if`.
+ * The whole of it runs again when `status` changes — and writes into the nodes
+ * it already made, rather than building them afresh. `failed` is a local of
+ * that run, and the panel below it is kept: what the run has to say to it
+ * travels through a cell, so the choice is made again and the component is
+ * not (Firsthand 0.9.1 and later; before that the local was read once and the
+ * failure could never appear).
  */
 import { component } from '@firsthandjs/dom';
 import { tag, useInvalidate, useResource } from '@firsthandjs/data';
@@ -50,28 +50,32 @@ export const Facts = component(() => {
     void invalidate(tag('facts'));
   };
 
-  return (
-    <Panel>
-      <Header>
-        <Heading>{t('facts.title')}</Heading>
-        <Button type="button" disabled={facts.loading.value} onClick={reload}>
-          {facts.loading.value ? t('facts.loading') : t('facts.reload')}
-        </Button>
-      </Header>
+  return () => {
+    const failed = facts.status.value === 'error';
 
-      {facts.status.value === 'error' ? (
-        <Failure>{t('facts.failed')}</Failure>
-      ) : (
-        // `loading` is true even while the previous answer is still on
-        // screen, which is what `status` alone could not tell you.
-        <List $stale={facts.loading.value}>
-          {(facts.data.value?.facts ?? []).map((fact) => (
-            <Fact key={fact}>{fact}</Fact>
-          ))}
-        </List>
-      )}
+    return (
+      <Panel>
+        <Header>
+          <Heading>{t('facts.title')}</Heading>
+          <Button type="button" disabled={facts.loading.value} onClick={reload}>
+            {facts.loading.value ? t('facts.loading') : t('facts.reload')}
+          </Button>
+        </Header>
 
-      <Note>{t('facts.note')}</Note>
-    </Panel>
-  );
+        {failed ? (
+          <Failure>{t('facts.failed')}</Failure>
+        ) : (
+          // `loading` is true even while the previous answer is still on
+          // screen, which is what `status` alone could not tell you.
+          <List $stale={facts.loading.value}>
+            {(facts.data.value?.facts ?? []).map((fact) => (
+              <Fact key={fact}>{fact}</Fact>
+            ))}
+          </List>
+        )}
+
+        <Note>{t('facts.note')}</Note>
+      </Panel>
+    );
+  };
 });
