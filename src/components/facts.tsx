@@ -31,45 +31,36 @@
  * It is not this view: every read here belongs to exactly one place on screen,
  * and reading them where they are used is both smaller and less to explain.
  */
-import { component } from "@firsthandjs/dom";
-import { tag, useInvalidate, useResource } from "@firsthandjs/data";
-import { api, type FactsResponse } from "../setup/api";
-import { t } from "../setup/i18n";
-import {
-  Button,
-  Fact,
-  Failure,
-  Header,
-  Heading,
-  List,
-  Note,
-  Panel,
-} from "./facts.styled";
+import { component } from '@firsthandjs/dom';
+import { tag, useInvalidate, useResource } from '@firsthandjs/data';
+import { api, type FactsResponse } from '../setup/api';
+import { t } from '../setup/i18n';
+import { Button, Fact, Failure, Header, Heading, List, Note, Panel } from './facts.styled';
 
 export const Facts = component(() => {
   const facts = useResource(({ request, tags }) => {
     // What this resource is about. A mutation naming `facts` would reload it,
     // and this component would never hear about the mutation.
-    tags(tag("facts"));
-    return api.get<FactsResponse>("facts.json")(request);
+    tags(tag('facts'));
+    return api.get<FactsResponse>('facts.json')(request);
   });
 
   const invalidate = useInvalidate();
   const reload = (): void => {
-    void invalidate(tag("facts"));
+    void invalidate(tag('facts'));
   };
 
   return (
     <Panel>
       <Header>
-        <Heading>{t("facts.title")}</Heading>
+        <Heading>{t('facts.title')}</Heading>
         <Button type="button" disabled={facts.loading.value} onClick={reload}>
-          {facts.loading.value ? t("facts.loading") : t("facts.reload")}
+          {facts.loading.value ? t('facts.loading') : t('facts.reload')}
         </Button>
       </Header>
 
-      {facts.status.value === "error" ? (
-        <Failure>{t("facts.failed")}</Failure>
+      {facts.status.value === 'error' ? (
+        <Failure>{t('facts.failed')}</Failure>
       ) : (
         // `loading` is true even while the previous answer is still on
         // screen, which is what `status` alone could not tell you.
@@ -80,7 +71,7 @@ export const Facts = component(() => {
         </List>
       )}
 
-      <Note>{t("facts.note")}</Note>
+      <Note>{t('facts.note')}</Note>
     </Panel>
   );
 });
