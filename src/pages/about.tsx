@@ -10,7 +10,7 @@ import { component } from '@firsthandjs/dom';
 import { t } from '../setup/i18n';
 import { Footer, Lead, List, Package, Title, What } from './about.styled';
 
-const packages = ['router', 'styled', 'i18n', 'data', 'devtools'] as const;
+const packages = ['router', 'styled', 'i18n', 'devtools'] as const;
 
 export const About = component(() => (
   <article>

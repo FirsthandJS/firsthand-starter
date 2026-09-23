@@ -71,7 +71,9 @@ export const Tab = styled(NavLink)`
   padding-bottom: 2px;
   border-bottom: 2px solid transparent;
   transition: color 120ms ease;
-  &:hover { color: ${(props) => props.theme.text}; }
+  &:hover {
+    color: ${(props) => props.theme.text};
+  }
   &.active {
     color: ${(props) => props.theme.text};
     border-bottom-color: ${(props) => props.theme.accent};

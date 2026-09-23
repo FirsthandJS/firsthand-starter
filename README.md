@@ -1,8 +1,8 @@
 # Firsthand starter
 
 A small starting point for a [Firsthand](https://github.com/FirsthandJS/firsthand)
-application: two pages, routed, styled, translated, with data loaded through a
-client and a cache, and devtools already wired up.
+application: two pages, routed, styled, translated, with devtools already
+wired up.
 
 Deliberately small. Everything here is something you would otherwise set up on
 the first day — and nothing else.
@@ -16,16 +16,15 @@ Then press **Ctrl+Shift+F** for the devtools panel.
 
 ## What is in it
 
-| Package                 | What it does here                                            |
-| ----------------------- | ------------------------------------------------------------ |
+| Package                 | What it does here                                               |
+| ----------------------- | --------------------------------------------------------------- |
 | `@firsthandjs/dom`      | Components, rendering, signals. The only runtime the rest share |
-| `@firsthandjs/router`   | Two routes under one shell, typed                            |
-| `@firsthandjs/styled`   | Every style in this project, beside the component it styles  |
-| `@firsthandjs/i18n`     | Every word in this project, in two languages                 |
-| `@firsthandjs/data`     | One resource, one tag, one fetch client with a cache         |
-| `@firsthandjs/devtools` | Development only, behind a `import.meta.env.DEV` guard       |
-| `@firsthandjs/compiler` | TSX into DOM instructions, at build time                     |
-| `@firsthandjs/testing`  | Two tests, each beside the thing it tests                    |
+| `@firsthandjs/router`   | Two routes under one shell, typed                               |
+| `@firsthandjs/styled`   | Every style in this project, beside the component it styles     |
+| `@firsthandjs/i18n`     | Every word in this project, in two languages                    |
+| `@firsthandjs/devtools` | Development only, behind a `import.meta.env.DEV` guard          |
+| `@firsthandjs/compiler` | TSX into DOM instructions, at build time                        |
+| `@firsthandjs/testing`  | Every test in this project, each beside the thing it tests      |
 
 There is no React bridge. `@firsthandjs/react` exists for component libraries
 that only ship for React — add it when you reach for one.
@@ -46,9 +45,8 @@ Measured, not estimated: `npm run build`, and `esbuild` over i18next on its own.
 
 ```
 src/
-  main.tsx                  the application: theme, data store, routes
+  main.tsx                  the application: theme and routes
   setup/
-    api.ts                  the fetch client and the cache
     devtools.ts             devtools, first and development-only
     i18n.ts                 i18next, made reactive
     theme.ts                the theme, and the declaration that types it
@@ -65,11 +63,9 @@ src/
     counter.tsx             a signal, a computed, and three buttons
     counter.styled.tsx
     counter.test.tsx
-    facts.tsx               a resource, a tag, and a cache to reach through
-    facts.styled.tsx
-    facts.test.tsx
-public/
-  facts.json                what the resource loads. A server would do instead
+    steps.tsx               three screens, and the function that chooses between them
+    steps.styled.tsx
+    steps.test.tsx
 ```
 
 Three rules, and they are the whole convention:
@@ -99,13 +95,14 @@ bundle — unlike the framework's own diagnostics, it is not stripped for you.
 **The theme is a signal.** Assigning a new object restyles everything that
 reads it, which is where a dark mode goes.
 
-**Data comes in through two layers, and they stay apart.** `useResource` holds
-the state — loading, loaded, failed, and when to run again. The client in
-`setup/api.ts` sends the request and keeps the cache, because knowing when two
-requests are the same thing is a transport's job and not a component's. What
-travels between them is one object: `{ signal, force }`. Press **Reload** on
-the home page and watch what that buys — the invalidation reaches *through* the
-cache, which is the whole reason `force` exists.
+**A setup may return a function, and then it is a scope that runs again.**
+That is what `components/steps.tsx` is for. Three screens, three components,
+and an ordinary `switch` choosing between them — a choice a setup cannot make,
+because a setup runs once. The answers live in signals of that setup, so
+stepping back finds the earlier one still chosen: the screens are replaced and
+the state behind them is not. Use it where a view has a genuine choice to
+make; a single condition reads better in the markup, where it is a part of its
+own.
 
 **Event handlers get names.** Not for React's reason — a component runs once,
 so an inline arrow is allocated once and costs nothing here. For the same
