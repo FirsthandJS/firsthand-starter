@@ -13,18 +13,18 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@firsthandjs/core": "^0.11.1",
-    "@firsthandjs/dom": "^0.11.1",
-    "@firsthandjs/i18n": "^0.11.1",
-    "@firsthandjs/router": "^0.11.1",
-    "@firsthandjs/styled": "^0.11.1",
+    "@firsthandjs/core": "^0.12.0",
+    "@firsthandjs/dom": "^0.12.0",
+    "@firsthandjs/i18n": "^0.12.0",
+    "@firsthandjs/router": "^0.12.0",
+    "@firsthandjs/styled": "^0.12.0",
     "i18next": "^26.4.2"
   },
   "devDependencies": {
-    "@firsthandjs/compiler": "^0.11.1",
-    "@firsthandjs/devtools": "^0.11.1",
-    "@firsthandjs/jsx-runtime": "^0.11.1",
-    "@firsthandjs/testing": "^0.11.1",
+    "@firsthandjs/compiler": "^0.12.0",
+    "@firsthandjs/devtools": "^0.12.0",
+    "@firsthandjs/jsx-runtime": "^0.12.0",
+    "@firsthandjs/testing": "^0.12.0",
     "happy-dom": "^20.14.5",
     "typescript": "^5.9.2",
     "vite": "^7.3.6",
